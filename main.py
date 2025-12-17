@@ -10,6 +10,9 @@ from datetime import timedelta, datetime
 from typing import List
 from ContinuousTraining import RNN, ContinuousTraining
 from collections import deque
+from contextlib import asynccontextmanager
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 
 # Configuração de Logs
 logging.basicConfig(
@@ -17,6 +20,8 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger("api_monitoring")
+
+scheduler = AsyncIOScheduler()
 
 # API 
 app = FastAPI(
@@ -251,3 +256,15 @@ def get_metrics():
         "total_registros": len(logs_recentes),
         "logs": list(logs_recentes) # Converte o deque para lista padrão para o JSON
     }
+
+
+@app.on_event("startup")
+def iniciar_agendador():
+    try:
+        # Agenda o treino para todo dia as 18:00
+        trigger = CronTrigger(hour=18, minute=0)
+        scheduler.add_job(tarefa_retreino_background, trigger)
+        scheduler.start()
+        logger.info("Agendador de retreino iniciado (Diariamente às 18:00).")
+    except Exception as e:
+        logger.error(f"Erro ao iniciar agendador: {e}")
