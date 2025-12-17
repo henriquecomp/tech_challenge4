@@ -1,0 +1,59 @@
+# --- Byte-compiled / Optimized / DLL files ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Ambientes Virtuais (Virtual Envs) ---
+# É crucial não subir a pasta com as bibliotecas
+venv/
+env/
+.venv/
+.env
+
+# --- Variáveis de Ambiente e Segredos ---
+# NUNCA suba suas senhas ou chaves de API
+.env
+.env.local
+.env.*
+
+# --- Machine Learning Artifacts (Pesados) ---
+# Modelos treinados e scalers não devem ir para o Git (são binários grandes)
+# Eles devem ser gerados pelo treino ou baixados de um storage
+*.pth
+*.pt
+*.pkl
+*.joblib
+model_*.h5
+
+# --- MLflow ---
+# Dados locais do MLflow (logs de treino e banco de dados SQLite)
+mlruns/
+mlartifacts/
+mlflow.db
+mlflow.db-journal
+
+# --- Docker ---
+# Arquivos de override locais (se houver)
+docker-compose.override.yml
+.docker/
+
+# --- IDEs e Editores ---
+# Configurações locais do seu editor que não interessam ao time
+.vscode/
+.idea/
+*.swp
+
+# --- MacOS (Sistema Operacional) ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# --- Logs ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Jupyter Notebooks ---
+# Opcional: Ignorar checkpoints automáticos do Jupyter
+.ipynb_checkpoints

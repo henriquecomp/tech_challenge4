@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+torch
+joblib
+scikit-learn
+numpy<2.0.0
+yfinance
+pydantic
+mlflow==2.14.1
+pandas
+apscheduler
+gunicorn
+protobuf
+cachetools
+packaging
+pyarrow
