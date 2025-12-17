@@ -14,3 +14,4 @@ protobuf
 cachetools
 packaging
 pyarrow
+psutil

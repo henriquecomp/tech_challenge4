@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from datetime import timedelta, datetime
 from typing import List
 from ContinuousTraining import RNN, ContinuousTraining
+from collections import deque
 
 # Configuração de Logs
 logging.basicConfig(
@@ -22,6 +23,9 @@ app = FastAPI(
     title="API Previsão PETR4 - Tech Challenge Fase 4",
     description="API para prever preços de ações usando LSTM com suporte a Retreino Contínuo"
 )
+
+# Lista de tamanho fixo para armazenar os últimos 50 logs na memória
+logs_recentes = deque(maxlen=50)
 
 # CPU ou GPU
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -63,15 +67,26 @@ carregar_modelo()
 @app.middleware("http")
 async def monitor_requests(request: Request, call_next):
     start_time = time.time()
+    
     response = await call_next(request)
+    
     process_time = time.time() - start_time
     
-    logger.info(
+    # Cria a string de log formatada
+    log_entry = (
         f"Path: {request.url.path} | "
         f"Method: {request.method} | "
         f"Status: {response.status_code} | "
         f"Tempo: {process_time:.4f}s"
     )
+    
+    # Loga no console (para o Docker/Administrador ver)
+    logger.info(log_entry)
+    
+    # Salva na lista em memória. Não grava do metrics
+    if request.url.path in("/predict-live", "/predict-custom") :
+        logs_recentes.append(log_entry)
+    
     return response
 
 # Model de entrada 
@@ -225,3 +240,14 @@ def predict_custom(input_data: StockInput):
     except Exception as e:
         logger.error(f"Erro no endpoint /predict-custom: {str(e)}")
         raise HTTPException(status_code=500, detail="Erro interno no processamento.")
+    
+@app.get("/metrics")
+def get_metrics():
+    """
+    Retorna os últimos 50 logs de requisição armazenados em memória.
+    Útil para monitoramento rápido sem acesso ao terminal.
+    """
+    return {
+        "total_registros": len(logs_recentes),
+        "logs": list(logs_recentes) # Converte o deque para lista padrão para o JSON
+    }

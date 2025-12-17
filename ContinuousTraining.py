@@ -78,6 +78,8 @@ class ContinuousTraining:
         Coleta -> Processamento -> Treino -> Avaliação -> Registro no MLflow -> Salvamento
         """
         try:
+            # Ativa metricas do mlflow
+            os.environ["MLFLOW_ENABLE_SYSTEM_METRICS_LOGGING"] = "true"
             # Obtenção e Tratamento dos Dados
             raw_data = self._get_data()
             X, y, scaler_p, scaler_v = self._preprocess(raw_data)
