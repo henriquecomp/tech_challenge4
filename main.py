@@ -13,6 +13,7 @@ from collections import deque
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
+from pytz import timezone
 
 # Configuração de Logs
 logging.basicConfig(
@@ -261,8 +262,9 @@ def get_metrics():
 @app.on_event("startup")
 def iniciar_agendador():
     try:
-        # Agenda o treino para todo dia as 18:00
-        trigger = CronTrigger(hour=18, minute=0)
+        # Agenda o treino para todo dia as 19:30
+        fuso_brasil = timezone('America/Sao_Paulo')
+        trigger = CronTrigger(hour=19, minute=30,timezone=fuso_brasil)
         scheduler.add_job(tarefa_retreino_background, trigger)
         scheduler.start()
         logger.info("Agendador de retreino iniciado (Diariamente às 18:00).")
