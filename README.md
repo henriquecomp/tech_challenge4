@@ -59,6 +59,12 @@ Ao ser acionado, o sistema executa os seguintes passos em segundo plano (`Backgr
 Após o sucesso do treinamento, a API recarrega automaticamente o modelo na memória RAM.
 * **Resultado:** A próxima requisição para `/predict` já utilizará a versão mais recente e inteligente do modelo, sem necessidade de reiniciar o servidor ou causar *downtime*.
 
+## Links de Produção
+O projeto está deployado e acessível publicamente:
+
+* **API (Swagger):** [https://tech_challenge.smarth.my/docs](https://tech_challenge.smarth.my/docs)
+* **MLflow Dashboard:** [https://mlflow.smarth.my/](https://mlflow.smarth.my/)
+
 ## Autores
 * Henrique Fávaro Tâmbalo (RM362398)
 * Willian do Prado Vieira (RM360949)
