@@ -41,7 +41,7 @@ O projeto implementa uma arquitetura de **Retreino Contínuo** para garantir que
 ### 1. Gatilho de Execução
 O retreino pode ser iniciado de duas formas:
 * **Manual (On-Demand):** Através de uma requisição `POST` para o endpoint `/train`.
-* **Automático (Agendado):** Configurado via `APScheduler` para rodar diariamente (ex: às 18:00), garantindo que o fechamento do dia seja incorporado.
+* **Automático (Agendado):** Configurado via `APScheduler` para rodar diariamente (ex: às 19:30), garantindo que o fechamento do dia seja incorporado.
 
 ### 2. O Fluxo de Treinamento
 Ao ser acionado, o sistema executa os seguintes passos em segundo plano (`BackgroundTasks`), sem interromper a disponibilidade da API:
